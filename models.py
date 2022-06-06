@@ -43,11 +43,23 @@ class Place(Base):
     title = Column(String, nullable=False)
     description = Column(Text)
     city_id = Column(Integer, ForeignKey('cities.id'))
-    country_id = Column(Integer, ForeignKey('countries.id'))
+    category_id = Column(Integer, ForeignKey('categories.id'))
 
     __table_args__ = (
         UniqueConstraint('title'),
     )
+
+class Categoty(Base):
+    __tablename__ = 'categories'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    places = relationship('Place')
+
+    __table_args__ = (
+        UniqueConstraint('title'),
+    )
+
 
 
 if __name__ == '__main__':
