@@ -1,7 +1,7 @@
 import logging
 from flask import Flask, render_template, request, url_for, redirect
 
-from allabouttravel_app.models import db, Category, Place, City, Country
+from allabouttravel_app.models import db, Category, Place, City
 
 logging.basicConfig(filename='app.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
