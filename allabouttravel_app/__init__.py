@@ -1,7 +1,10 @@
+import logging
 from flask import Flask, render_template, request, url_for, redirect
 
 from allabouttravel_app.models import db, Category, Place, City, Country
 
+logging.basicConfig(filename='app.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
@@ -33,7 +36,7 @@ def create_app():
                 return(redirect(url_for('index')))
             except:
                 db.session.rollback()
-                print('Ошибка при добавлении места в БД')
+                logger.exception('exception')
             
 
         return render_template('add_place.html', title='Добавить место', cities=cities, categories=categories)
