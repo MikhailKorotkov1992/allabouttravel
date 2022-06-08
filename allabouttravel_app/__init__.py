@@ -6,6 +6,7 @@ from allabouttravel_app.models import db, Category, Place, City
 logging.basicConfig(filename='app.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
@@ -37,6 +38,7 @@ def create_app():
             except:
                 db.session.rollback()
                 logger.exception('exception')
+
             
 
         return render_template('add_place.html', title='Добавить место', cities=cities, categories=categories)
