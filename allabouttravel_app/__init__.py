@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, flash
 
 from allabouttravel_app.models import db, Place, City, Category
 from allabouttravel_app.forms import AddPlaceForm
@@ -29,10 +29,12 @@ def create_app():
                               city_id=form.select_city.data, category_id=form.select_category.data)
                 db.session.add(place)
                 db.session.commit()
+                flash('Место добавлено')
+                return redirect(url_for('index'))
             except Exception as e:
                 db.session.rollback()
                 logger.exception(e)
-            return redirect(url_for('index'))
+                flash('Ошибка при добавлении в БД')
 
         return render_template('add_place.html', title='Добавить место', form=form)
 
