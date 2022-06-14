@@ -12,11 +12,9 @@ def create_app():
     app.config.from_pyfile('config.py')
     db.init_app(app)
 
-
     @app.route('/')
     def index():
         return render_template('index.html', title='Главная страница')
-
 
     @app.route('/add_place', methods=['POST', 'GET'])
     def add_place():
@@ -38,8 +36,6 @@ def create_app():
             except:
                 db.session.rollback()
                 logger.exception('exception')
-
-            
 
         return render_template('add_place.html', title='Добавить место', cities=cities, categories=categories)
 
