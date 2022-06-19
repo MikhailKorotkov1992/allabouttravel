@@ -1,13 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
+from allabouttravel_app.db import db
 
 class Country(db.Model):
     __tablename__ = 'countries'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String, unique=True, nullable=False)
+    title = db.Column(db.String, index=True, unique=True, nullable=False)
     cities = db.relationship('City')
 
     def __repr__(self):
@@ -18,7 +15,7 @@ class City(db.Model):
     __tablename__ = 'cities'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String, unique=True, nullable=False)
+    title = db.Column(db.String, index=True, unique=True, nullable=False)
     country_id = db.Column(db.Integer, db.ForeignKey('countries.id'))
     places = db.relationship('Place')
 
@@ -35,6 +32,7 @@ class Place(db.Model):
     is_verified = db.Column(db.Boolean, default=False, nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return f'{self.title}'
@@ -44,7 +42,7 @@ class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String, unique=True, nullable=False)
+    title = db.Column(db.String, index=True, unique=True, nullable=False)
     places = db.relationship('Place')
 
     def __repr__(self):
