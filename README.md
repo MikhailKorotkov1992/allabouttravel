@@ -7,3 +7,10 @@ set FLASK_ENV=development
 set FLASK_DEBUG=1
 flask run
 ```
+Админ сайта
+```
+имя: Админ
+фамилия: Админов
+email: admin@yandex.ru
+пароль: 12345
+```

@@ -1,11 +1,15 @@
-import logging
-from flask import Flask, render_template, url_for, redirect, flash
+# import logging
+from flask import Flask
+from flask_login import LoginManager
 
-from allabouttravel_app.models import db, Place, City, Category
-from allabouttravel_app.forms import AddPlaceForm
+from allabouttravel_app.db import db
+from allabouttravel_app.admin.views import blueprint as admin_blueprint
+from allabouttravel_app.place.views import blueprint as place_blueprint
+from allabouttravel_app.user.models import User
+from allabouttravel_app.user.views import blueprint as user_blueprint
 
-logging.basicConfig(filename='app.log', level=logging.INFO)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(filename='app.log', level=logging.INFO)
+# logger = logging.getLogger(__name__)
 
 
 def create_app():
@@ -13,29 +17,16 @@ def create_app():
     app.config.from_pyfile('config.py')
     db.init_app(app)
 
-    @app.route('/')
-    def index():
-        return render_template('index.html', title='Главная страница')
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'user.login'
 
-    @app.route('/add_place', methods=['POST', 'GET'])
-    def add_place():
-        form = AddPlaceForm()
-        form.select_city.choices = [(city.id, city.title) for city in City.query.all()]
-        form.select_category.choices = [(cat.id, cat.title) for cat in Category.query.all()]
+    app.register_blueprint(admin_blueprint)
+    app.register_blueprint(place_blueprint)
+    app.register_blueprint(user_blueprint)
 
-        if form.validate_on_submit():
-            try:
-                place = Place(title=form.place_name.data, description=form.description.data,
-                              city_id=form.select_city.data, category_id=form.select_category.data)
-                db.session.add(place)
-                db.session.commit()
-                flash('Место добавлено')
-                return redirect(url_for('index'))
-            except Exception as e:
-                db.session.rollback()
-                logger.exception(e)
-                flash('Ошибка при добавлении в БД')
-
-        return render_template('add_place.html', title='Добавить место', form=form)
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
     return app
