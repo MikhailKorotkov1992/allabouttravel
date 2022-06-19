@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, redirect, flash, url_for
+from flask import Blueprint, render_template, redirect, flash, url_for, current_app
 from flask_login import login_required, current_user
 
-# from allabouttravel_app import logger
 from allabouttravel_app.db import db
 from allabouttravel_app.place.models import Category, City, Place
 from allabouttravel_app.place.forms import AddPlaceForm
@@ -30,11 +29,11 @@ def add_place():
             db.session.add(place)
             db.session.commit()
             flash('Место добавлено')
+            current_app.logger.info(f"место добавлено {place}")
             return redirect(url_for('place.index'))
         except Exception as e:
             db.session.rollback()
-            print(e)
-            # logger.exception(e)
+            current_app.logger.error(e)
             flash('Ошибка при добавлении в БД')
 
     return render_template('places/add_place.html', title='Добавить место', form=form)

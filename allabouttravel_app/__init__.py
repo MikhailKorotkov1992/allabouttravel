@@ -1,4 +1,4 @@
-# import logging
+import logging
 from flask import Flask
 from flask_login import LoginManager
 
@@ -8,8 +8,8 @@ from allabouttravel_app.place.views import blueprint as place_blueprint
 from allabouttravel_app.user.models import User
 from allabouttravel_app.user.views import blueprint as user_blueprint
 
-# logging.basicConfig(filename='app.log', level=logging.INFO)
-# logger = logging.getLogger(__name__)
+
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 
 def create_app():
