@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>{{ city }} --  {{ category }}</h4>
+<p>{{ place.description }}</p>
+{% if not place.is_verified %}
+    <p><a href="{{ url_for('admin.change_place_status', alias=place.title) }}">Опубликовать</a></p>
+{% else %}
+    <p><a href="{{ url_for('admin.change_place_status', alias=place.title) }}">Снять с публикации</a></p>
+{% endif %}
+{% endblock %}

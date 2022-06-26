@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<div>
+    <div><h3>{{ place }} - {{ city }} - {{ category }}</h3></div>
+    <div>{{ place.description }}</div>
+</div>
+{% endblock %}

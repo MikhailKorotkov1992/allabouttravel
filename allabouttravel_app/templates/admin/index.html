@@ -1,1 +1,12 @@
-<h1>Привет админ</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <ul class="list-group">
+        <li class="list-group-item active">{{ title }}</li>
+        {% for m in menu %}
+        <li class="list-group-item"><a href="{{ url_for(m.url) }}">{{ m.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 {{ super() }}
-<form action="{{url_for('place.add_place')}}" method="POST">
+<form action="{{url_for('place.process_add_place')}}" method="POST">
    <div class="row">
     <div class="col-8">
         {% with messages = get_flashed_messages() %}
