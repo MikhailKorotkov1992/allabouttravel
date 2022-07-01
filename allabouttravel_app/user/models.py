@@ -14,6 +14,13 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, index=True, default=False)
     added_places = db.relationship('Place')
 
+    @property
+    def get_user_status(self):
+        if self.is_admin:
+            return 'Админ'
+        else:
+            return 'Пользователь'
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 

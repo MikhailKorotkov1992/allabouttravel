@@ -34,6 +34,13 @@ class Place(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    @property
+    def get_place_status(self):
+        if self.is_verified:
+            return 'Опубликован'
+        else:
+            return 'Требует проверки'
+
     def __repr__(self):
         return f'{self.title}'
 
