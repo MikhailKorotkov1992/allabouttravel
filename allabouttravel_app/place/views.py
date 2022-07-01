@@ -3,18 +3,10 @@ from flask_login import login_required, current_user
 
 from allabouttravel_app.db import db
 from allabouttravel_app.get_place_info import get_place_info
-from allabouttravel_app.place.models import Category, City, Place
+from allabouttravel_app.place.models import Place
 from allabouttravel_app.place.forms import AddPlaceForm
 
 blueprint = Blueprint('place', __name__)
-
-
-def create_place_form():
-    """Создает форму для добавления места в БД"""
-    form = AddPlaceForm()
-    form.select_city.choices = [(city.id, city.title) for city in City.query.all()]
-    form.select_category.choices = [(cat.id, cat.title) for cat in Category.query.all()]
-    return form
 
 
 @blueprint.route('/')
@@ -29,18 +21,11 @@ def show_place(alias):
     return render_template('places/show_place.html', place=place, city=city, category=category)
 
 
-@blueprint.route('/add_place')
+
+@blueprint.route('/add_place', methods=['POST', 'GET'])
 @login_required
 def add_place():
-    form = create_place_form()
-
-    return render_template('places/add_place.html', title='Добавить место', form=form)
-
-
-@blueprint.route('/process-add-place', methods=['POST'])
-@login_required
-def process_add_place():
-    form = create_place_form()
+    form = AddPlaceForm()
 
     if form.validate_on_submit():
         try:
@@ -58,3 +43,5 @@ def process_add_place():
             current_app.logger.error(e)
             flash('Ошибка при добавлении в БД')
             return redirect(url_for('place.add_place'))
+
+    return render_template('places/add_place.html', title='Добавить место', form=form)
