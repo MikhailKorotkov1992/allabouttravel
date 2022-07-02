@@ -21,7 +21,6 @@ def show_place(alias):
     return render_template('places/show_place.html', place=place, city=city, category=category)
 
 
-
 @blueprint.route('/add_place', methods=['POST', 'GET'])
 @login_required
 def add_place():

@@ -2,7 +2,7 @@
 
 {% block content %}
 {{ super() }}
-<form action="{{ url_for('user.login') }}" method="POST">
+<form action="{{ url_for('user.process_login') }}" method="POST">
    <div class="row">
     <div class="col-8">
         {% with messages = get_flashed_messages() %}
@@ -29,7 +29,6 @@
                 <br>
             </div>
         {% endfor %}
-        <br>
         <div class="form-group form-check">
             {{ form.remember_me() }}
             {{ form.remember_me.label(class_='form-check-label') }}
